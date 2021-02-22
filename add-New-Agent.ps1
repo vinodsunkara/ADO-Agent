@@ -18,7 +18,7 @@ param(
 )
 
 # Packages needs to install
-$packages = 'git'
+$Packages = 'googlechrome' , 'git' , 'notepadplusplus' , 'googlechrome'
 
 
 Start-Transcript
@@ -57,7 +57,7 @@ Expand-Archive -Path agent.zip -DestinationPath $PWD
 # Run the config script of the build agent
 .\config.cmd --unattended --url "https://dev.azure.com/$organizationName" --auth pat --token "$PAT" --pool "$agentPool" --agent "$agentName" --acceptTeeEula --runAsService
 
-# Delete .zip file
+# Delete agent.zip file
 Remove-Item .\agent.zip
 
 # Install chocolatey if not installed and Install all required softwares by using choco
