@@ -24,6 +24,25 @@ $Packages = 'googlechrome' , 'git' , 'notepadplusplus' , 'googlechrome'
 Start-Transcript
 Write-Host "start"
 
+# Install chocolatey if not installed and Install all required softwares by using choco
+if (Test-Path -Path "$env:ProgramData\Chocolatey") {
+	# Install Packages
+	foreach ($PackageName in $Packages)
+	{
+		choco install $PackageName -y
+	}
+}
+else {
+	# Install Choco
+	Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+	# Install Packages
+	foreach ($PackageName in $Packages)
+	{
+		choco install $PackageName -y
+	}
+}
+
 # Test if an old installation exists, if so, delete the folder
 if (Test-Path "c:\agent")
 {
@@ -59,26 +78,6 @@ Expand-Archive -Path agent.zip -DestinationPath $PWD
 
 # Delete agent.zip file
 Remove-Item .\agent.zip
-
-# Install chocolatey if not installed and Install all required softwares by using choco
-
-if (Test-Path -Path "$env:ProgramData\Chocolatey") {
-	# Install Packages
-	foreach ($PackageName in $Packages)
-	{
-		choco install $PackageName -y
-	}
-}
-else {
-	# Install Choco
-	Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-
-	# Install Packages
-	foreach ($PackageName in $Packages)
-	{
-		choco install $PackageName -y
-	}
-}
 
 # Exit
 Stop-Transcript
